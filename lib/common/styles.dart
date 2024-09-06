@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color primaryColor = Color(0xFFFFFFFF);
-const Color secondaryColor = Color(0xFF1BAC4B);
+const Color secondaryColor = Colors.amber;
 
 final TextTheme myTextTheme = TextTheme(
   displayLarge: GoogleFonts.urbanist(

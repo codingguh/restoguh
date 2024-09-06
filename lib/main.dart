@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:restoguh/ui/screens/restaurant_list_screen.dart';
+import 'package:restoguh/ui/screens/restaurant_detail_screen.dart';
+import 'package:restoguh/ui/screens/restaurant_search_screen.dart';
+import 'data/model/restaurant_list_model.dart';
 import 'common/styles.dart';
-import 'data/model/restaurant.dart';
-import 'ui/restaurant_detail_page.dart';
-import 'ui/restaurant_list_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Restaurant App',
+      title: 'Restoguh',
       theme: ThemeData(
         primarySwatch: Colors.amber,
         colorScheme: Theme.of(context).colorScheme.copyWith(
@@ -25,14 +25,19 @@ class MyApp extends StatelessWidget {
               secondary: secondaryColor,
             ),
         textTheme: myTextTheme,
-        appBarTheme: const AppBarTheme(elevation: 2),
+        appBarTheme: const AppBarTheme(
+            elevation: 2,
+            titleTextStyle: TextStyle(
+                color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold),
+            color: Colors.amber),
       ),
-      initialRoute: RestaurantListPage.routeName,
+      initialRoute: RestaurantListScreen.routeName,
       routes: {
-        RestaurantListPage.routeName: (context) => const RestaurantListPage(),
-        RestaurantDetailPage.routeName: (context) => RestaurantDetailPage(
+        RestaurantListScreen.routeName: (_) => const RestaurantListScreen(),
+        RestaurantDetailScreen.routeName: (context) => RestaurantDetailScreen(
             restaurant:
-                ModalRoute.of(context)?.settings.arguments as Restaurant),
+                ModalRoute.of(context)!.settings.arguments as Restaurant),
+        RestaurantSearchScreen.routeName: (_) => const RestaurantSearchScreen(),
       },
     );
   }

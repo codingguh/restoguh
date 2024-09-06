@@ -1,44 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:restoguh/ui/screens/restaurant_detail_screen.dart';
 
-import '../data/model/restaurant.dart';
-import 'restaurant_detail_page.dart';
+import '../../data/model/restaurant_list_model.dart';
 
-class RestaurantListPage extends StatelessWidget {
-  static const routeName = '/restaurant_list';
+class CardRestaurant extends StatelessWidget {
+  final Restaurant restaurant;
 
-  const RestaurantListPage({super.key});
+  const CardRestaurant({super.key, required this.restaurant});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Restaurant App'),
-      ),
-      body: FutureBuilder<String>(
-        future: DefaultAssetBundle.of(context)
-            .loadString('assets/local_restaurant.json'),
-        builder: (context, snapshot) {
-          final List<Restaurant> restaurants = parseRestaurants(snapshot.data);
-
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              final restaurant = restaurants[index];
-              return _itemList(context, restaurant);
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _itemList(BuildContext context, Restaurant restaurant) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           context,
-          RestaurantDetailPage.routeName,
+          RestaurantDetailScreen.routeName,
           arguments: restaurant,
         );
       },
@@ -47,11 +23,11 @@ class RestaurantListPage extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
           boxShadow: const [
             BoxShadow(
               color: Colors.grey,
-              blurRadius: 6,
+              blurRadius: 10,
               offset: Offset(0, 5),
             ),
           ],
@@ -59,39 +35,36 @@ class RestaurantListPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                height: 100,
-                width: 125,
-                child: restaurant.pictureId == null
-                    ? Icon(
+            Hero(
+              tag: restaurant.pictureId,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: SizedBox(
+                  height: 100,
+                  width: 125,
+                  child: Image.network(
+                    'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
+                    fit: BoxFit.cover,
+                    loadingBuilder: (_, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.grey[400],
+                          ),
+                        );
+                      }
+                    },
+                    errorBuilder: (_, __, ___) {
+                      return Icon(
                         Icons.broken_image,
                         size: 100,
                         color: Colors.grey[400],
-                      )
-                    : Image.network(
-                        restaurant.pictureId!,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.grey[400],
-                              ),
-                            );
-                          }
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.broken_image,
-                            size: 100,
-                            color: Colors.grey[400],
-                          );
-                        },
-                      ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -101,12 +74,12 @@ class RestaurantListPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 8),
                   Text(
-                    '${restaurant.name}',
+                    restaurant.name,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: Theme.of(context)
                         .textTheme
-                        .titleMedium!
+                        .bodyMedium!
                         .copyWith(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
                   const SizedBox(height: 8),
@@ -119,7 +92,7 @@ class RestaurantListPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${restaurant.city}',
+                        restaurant.city,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!

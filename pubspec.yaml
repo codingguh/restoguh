@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   flutter_rating_bar: ^4.0.1
+  http: ^1.2.2
+  provider: ^6.1.2
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +67,11 @@ flutter:
     - assets/local_restaurant.json
     - assets/images/food.png
     - assets/images/drink.png
+    - assets/images/search-restaurant.png
+    - assets/images/not-found.png
+    - assets/images/empty-data.png
+    - assets/images/no-internet.png
+    - assets/lotties/loading.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:
